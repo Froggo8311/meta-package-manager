@@ -1,0 +1,992 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+<meta property="og:title" content="CLI help" />
+  
+<meta property="og:type" content="website" />
+  
+<meta property="og:url" content="cli-help.html" />
+  
+<meta property="og:description" content="mpm: Common CLI options and behavior for multiple package managers. Options backup: Dump the list of installed packages to a TOML file. By default the generated TOML content is displayed directly i..." />
+  <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Configuration" href="configuration.html" /><link rel="prev" title="Use-cases" href="usecase.html" />
+
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
+        <title>CLI help - Meta Package Manager</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Meta Package Manager</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand centered" href="index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="_static/logo-square.svg" alt="Logo"/>
+  </div>
+  
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usecase.html">Use-cases</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">CLI help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xbar.html">xbar plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="falsehoods.html">Falsehoods programmers believe about package managers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="meta_package_manager.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="meta_package_manager.managers.html">meta_package_manager.managers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meta_package_manager.tests.html">meta_package_manager.tests package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meta_package_manager.xbar.html">meta_package_manager.xbar package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="todolist.html">Todo-list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code-of-conduct.html">Code of conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kdeldycke/meta-package-manager">GitHub Repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/sponsors/kdeldycke">Funding</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="cli-help">
+<h1>CLI help<a class="headerlink" href="#cli-help" title="Permalink to this headline">#</a></h1>
+<section id="mpm">
+<h2>mpm<a class="headerlink" href="#mpm" title="Permalink to this headline">#</a></h2>
+<p>Common CLI options and behavior for multiple package managers.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mpm <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-m">
+<span id="cmdoption-mpm-manager"></span><span class="sig-name descname"><span class="pre">-m</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--manager</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;manager&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-m" title="Permalink to this definition">#</a></dt>
+<dd><p>Restrict sub-command to a subset of package managers. Repeat to select multiple managers. The order in which options are provided defines the order in which sub-commands will process them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>apm | apt | apt-mint | brew | cask | choco | composer | flatpak | gem | mas | npm | opkg | pip | snap | vscode | yarn</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-e">
+<span id="cmdoption-mpm-exclude"></span><span class="sig-name descname"><span class="pre">-e</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--exclude</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;exclude&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-e" title="Permalink to this definition">#</a></dt>
+<dd><p>Exclude a package manager. Repeat to exclude multiple managers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>apm | apt | apt-mint | brew | cask | choco | composer | flatpak | gem | mas | npm | opkg | pip | snap | vscode | yarn</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-a">
+<span id="cmdoption-mpm-all-managers"></span><span class="sig-name descname"><span class="pre">-a</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--all-managers</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-a" title="Permalink to this definition">#</a></dt>
+<dd><p>Force evaluation of all package manager implemented by mpm, even those not supported by the current platform. Still applies filtering by –manager and –exclude options before calling the subcommand.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-x">
+<span id="cmdoption-mpm-xkcd"></span><span class="sig-name descname"><span class="pre">-x</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--xkcd</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-x" title="Permalink to this definition">#</a></dt>
+<dd><p>Preset manager selection as defined by XKCD #1654, i.e. pip, brew, npm, apt.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-apm">
+<span class="sig-name descname"><span class="pre">--apm</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-apm" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager apm.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-apt">
+<span class="sig-name descname"><span class="pre">--apt</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-apt" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager apt.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-apt-mint">
+<span class="sig-name descname"><span class="pre">--apt-mint</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-apt-mint" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager apt-mint.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-brew">
+<span class="sig-name descname"><span class="pre">--brew</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-brew" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager brew.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-cask">
+<span class="sig-name descname"><span class="pre">--cask</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-cask" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager cask.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-choco">
+<span class="sig-name descname"><span class="pre">--choco</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-choco" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager choco.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-composer">
+<span class="sig-name descname"><span class="pre">--composer</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-composer" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager composer.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-flatpak">
+<span class="sig-name descname"><span class="pre">--flatpak</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-flatpak" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager flatpak.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-gem">
+<span class="sig-name descname"><span class="pre">--gem</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-gem" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager gem.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-mas">
+<span class="sig-name descname"><span class="pre">--mas</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-mas" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager mas.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-npm">
+<span class="sig-name descname"><span class="pre">--npm</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-npm" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager npm.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-opkg">
+<span class="sig-name descname"><span class="pre">--opkg</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-opkg" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager opkg.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-pip">
+<span class="sig-name descname"><span class="pre">--pip</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-pip" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager pip.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-snap">
+<span class="sig-name descname"><span class="pre">--snap</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-snap" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager snap.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-vscode">
+<span class="sig-name descname"><span class="pre">--vscode</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-vscode" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager vscode.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-yarn">
+<span class="sig-name descname"><span class="pre">--yarn</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-yarn" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias to –manager yarn.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-ignore-auto-updates">
+<span id="cmdoption-mpm-include-auto-updates"></span><span class="sig-name descname"><span class="pre">--ignore-auto-updates</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--include-auto-updates</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-ignore-auto-updates" title="Permalink to this definition">#</a></dt>
+<dd><p>Report all outdated packages, including those tagged as auto-updating. Only applies to ‘outdated’ and ‘upgrade’ commands.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-stop-on-error">
+<span id="cmdoption-mpm-continue-on-error"></span><span class="sig-name descname"><span class="pre">--stop-on-error</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--continue-on-error</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-stop-on-error" title="Permalink to this definition">#</a></dt>
+<dd><p>Stop right away or continue operations on manager CLI error.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-d">
+<span id="cmdoption-mpm-dry-run"></span><span class="sig-name descname"><span class="pre">-d</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--dry-run</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-d" title="Permalink to this definition">#</a></dt>
+<dd><p>Do not actually perform any action, just simulate CLI calls.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-o">
+<span id="cmdoption-mpm-output-format"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output-format</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_format&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-o" title="Permalink to this definition">#</a></dt>
+<dd><p>Rendering mode of the output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>csv | csv-tab | double_grid | double_outline | fancy_grid | github | grid | html | jira | json | latex | latex_booktabs | mediawiki | minimal | moinmoin | orgtbl | outline | pipe | plain | psql | rounded_grid | rounded_outline | rst | simple | simple_grid | simple_outline | textile | tsv | vertical</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-s">
+<span id="cmdoption-mpm-sort-by"></span><span class="sig-name descname"><span class="pre">-s</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--sort-by</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;sort_by&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-s" title="Permalink to this definition">#</a></dt>
+<dd><p>Sort results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>manager_id | manager_name | package_id | package_name | version</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-stats">
+<span id="cmdoption-mpm-no-stats"></span><span class="sig-name descname"><span class="pre">--stats</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-stats</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-stats" title="Permalink to this definition">#</a></dt>
+<dd><p>Print per-manager package statistics.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-time">
+<span id="cmdoption-mpm-no-time"></span><span class="sig-name descname"><span class="pre">--time</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-time</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-time" title="Permalink to this definition">#</a></dt>
+<dd><p>Measure and print elapsed execution time.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-color">
+<span id="cmdoption-mpm-ansi"></span><span id="cmdoption-mpm-no-color"></span><span id="cmdoption-mpm-no-ansi"></span><span class="sig-name descname"><span class="pre">--color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ansi</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-ansi</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-color" title="Permalink to this definition">#</a></dt>
+<dd><p>Strip out all colors and all ANSI codes from output.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-C">
+<span id="cmdoption-mpm-c"></span><span id="cmdoption-mpm-config"></span><span class="sig-name descname"><span class="pre">-C</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--config</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;CONFIG_PATH&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-C" title="Permalink to this definition">#</a></dt>
+<dd><p>Location of the configuration file. Supports both local path and remote URL.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-v">
+<span id="cmdoption-mpm-verbosity"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbosity</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;LEVEL&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-v" title="Permalink to this definition">#</a></dt>
+<dd><p>Either CRITICAL, ERROR, WARNING, INFO, DEBUG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>CRITICAL | ERROR | WARNING | INFO | DEBUG</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-version">
+<span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-version" title="Permalink to this definition">#</a></dt>
+<dd><p>Show the version and exit.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-h">
+<span id="cmdoption-mpm-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-h" title="Permalink to this definition">#</a></dt>
+<dd><p>Show this message and exit.</p>
+</dd></dl>
+<section id="mpm-backup">
+<h3>backup<a class="headerlink" href="#mpm-backup" title="Permalink to this headline">#</a></h3>
+<p>Dump the list of installed packages to a TOML file.</p>
+<p>By default the generated TOML content is displayed directly in the console
+output. So <cite>mpm backup</cite> is the same as a call to <cite>mpm backup -</cite>. To have
+the result written in a file on disk, specify the output file like so:
+<cite>mpm backup ./mpm-packages.toml</cite>.</p>
+<p>The TOML file can then be safely consumed by the <cite>mpm restore</cite> command.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mpm backup <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>TOML_OUTPUT<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-backup-time">
+<span id="cmdoption-mpm-backup-no-time"></span><span class="sig-name descname"><span class="pre">--time</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-time</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-backup-time" title="Permalink to this definition">#</a></dt>
+<dd><p>Measure and print elapsed execution time.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-backup-color">
+<span id="cmdoption-mpm-backup-ansi"></span><span id="cmdoption-mpm-backup-no-color"></span><span id="cmdoption-mpm-backup-no-ansi"></span><span class="sig-name descname"><span class="pre">--color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ansi</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-ansi</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-backup-color" title="Permalink to this definition">#</a></dt>
+<dd><p>Strip out all colors and all ANSI codes from output.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-backup-C">
+<span id="cmdoption-mpm-backup-c"></span><span id="cmdoption-mpm-backup-config"></span><span class="sig-name descname"><span class="pre">-C</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--config</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;CONFIG_PATH&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-backup-C" title="Permalink to this definition">#</a></dt>
+<dd><p>Location of the configuration file. Supports both local path and remote URL.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-backup-v">
+<span id="cmdoption-mpm-backup-verbosity"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbosity</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;LEVEL&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-backup-v" title="Permalink to this definition">#</a></dt>
+<dd><p>Either CRITICAL, ERROR, WARNING, INFO, DEBUG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>CRITICAL | ERROR | WARNING | INFO | DEBUG</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-backup-version">
+<span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-backup-version" title="Permalink to this definition">#</a></dt>
+<dd><p>Show the version and exit.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-backup-h">
+<span id="cmdoption-mpm-backup-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-backup-h" title="Permalink to this definition">#</a></dt>
+<dd><p>Show this message and exit.</p>
+</dd></dl>
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-backup-arg-TOML_OUTPUT">
+<span id="cmdoption-mpm-backup-arg-toml-output"></span><span class="sig-name descname"><span class="pre">TOML_OUTPUT</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-backup-arg-TOML_OUTPUT" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional argument</p>
+</dd></dl>
+</section>
+<section id="mpm-cleanup">
+<h3>cleanup<a class="headerlink" href="#mpm-cleanup" title="Permalink to this headline">#</a></h3>
+<p>Cleanup local data and temporary artifacts.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mpm cleanup <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-cleanup-time">
+<span id="cmdoption-mpm-cleanup-no-time"></span><span class="sig-name descname"><span class="pre">--time</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-time</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-cleanup-time" title="Permalink to this definition">#</a></dt>
+<dd><p>Measure and print elapsed execution time.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-cleanup-color">
+<span id="cmdoption-mpm-cleanup-ansi"></span><span id="cmdoption-mpm-cleanup-no-color"></span><span id="cmdoption-mpm-cleanup-no-ansi"></span><span class="sig-name descname"><span class="pre">--color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ansi</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-ansi</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-cleanup-color" title="Permalink to this definition">#</a></dt>
+<dd><p>Strip out all colors and all ANSI codes from output.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-cleanup-C">
+<span id="cmdoption-mpm-cleanup-c"></span><span id="cmdoption-mpm-cleanup-config"></span><span class="sig-name descname"><span class="pre">-C</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--config</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;CONFIG_PATH&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-cleanup-C" title="Permalink to this definition">#</a></dt>
+<dd><p>Location of the configuration file. Supports both local path and remote URL.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-cleanup-v">
+<span id="cmdoption-mpm-cleanup-verbosity"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbosity</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;LEVEL&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-cleanup-v" title="Permalink to this definition">#</a></dt>
+<dd><p>Either CRITICAL, ERROR, WARNING, INFO, DEBUG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>CRITICAL | ERROR | WARNING | INFO | DEBUG</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-cleanup-version">
+<span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-cleanup-version" title="Permalink to this definition">#</a></dt>
+<dd><p>Show the version and exit.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-cleanup-h">
+<span id="cmdoption-mpm-cleanup-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-cleanup-h" title="Permalink to this definition">#</a></dt>
+<dd><p>Show this message and exit.</p>
+</dd></dl>
+</section>
+<section id="mpm-install">
+<h3>install<a class="headerlink" href="#mpm-install" title="Permalink to this headline">#</a></h3>
+<p>Install the provided package using one of the provided package manager.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mpm install <span class="o">[</span>OPTIONS<span class="o">]</span> PACKAGE_ID
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-install-time">
+<span id="cmdoption-mpm-install-no-time"></span><span class="sig-name descname"><span class="pre">--time</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-time</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-install-time" title="Permalink to this definition">#</a></dt>
+<dd><p>Measure and print elapsed execution time.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-install-color">
+<span id="cmdoption-mpm-install-ansi"></span><span id="cmdoption-mpm-install-no-color"></span><span id="cmdoption-mpm-install-no-ansi"></span><span class="sig-name descname"><span class="pre">--color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ansi</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-ansi</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-install-color" title="Permalink to this definition">#</a></dt>
+<dd><p>Strip out all colors and all ANSI codes from output.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-install-C">
+<span id="cmdoption-mpm-install-c"></span><span id="cmdoption-mpm-install-config"></span><span class="sig-name descname"><span class="pre">-C</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--config</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;CONFIG_PATH&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-install-C" title="Permalink to this definition">#</a></dt>
+<dd><p>Location of the configuration file. Supports both local path and remote URL.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-install-v">
+<span id="cmdoption-mpm-install-verbosity"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbosity</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;LEVEL&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-install-v" title="Permalink to this definition">#</a></dt>
+<dd><p>Either CRITICAL, ERROR, WARNING, INFO, DEBUG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>CRITICAL | ERROR | WARNING | INFO | DEBUG</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-install-version">
+<span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-install-version" title="Permalink to this definition">#</a></dt>
+<dd><p>Show the version and exit.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-install-h">
+<span id="cmdoption-mpm-install-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-install-h" title="Permalink to this definition">#</a></dt>
+<dd><p>Show this message and exit.</p>
+</dd></dl>
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-install-arg-PACKAGE_ID">
+<span id="cmdoption-mpm-install-arg-package-id"></span><span class="sig-name descname"><span class="pre">PACKAGE_ID</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-install-arg-PACKAGE_ID" title="Permalink to this definition">#</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+</section>
+<section id="mpm-installed">
+<h3>installed<a class="headerlink" href="#mpm-installed" title="Permalink to this headline">#</a></h3>
+<p>List all packages installed on the system from all managers.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mpm installed <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-installed-time">
+<span id="cmdoption-mpm-installed-no-time"></span><span class="sig-name descname"><span class="pre">--time</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-time</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-installed-time" title="Permalink to this definition">#</a></dt>
+<dd><p>Measure and print elapsed execution time.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-installed-color">
+<span id="cmdoption-mpm-installed-ansi"></span><span id="cmdoption-mpm-installed-no-color"></span><span id="cmdoption-mpm-installed-no-ansi"></span><span class="sig-name descname"><span class="pre">--color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ansi</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-ansi</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-installed-color" title="Permalink to this definition">#</a></dt>
+<dd><p>Strip out all colors and all ANSI codes from output.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-installed-C">
+<span id="cmdoption-mpm-installed-c"></span><span id="cmdoption-mpm-installed-config"></span><span class="sig-name descname"><span class="pre">-C</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--config</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;CONFIG_PATH&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-installed-C" title="Permalink to this definition">#</a></dt>
+<dd><p>Location of the configuration file. Supports both local path and remote URL.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-installed-v">
+<span id="cmdoption-mpm-installed-verbosity"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbosity</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;LEVEL&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-installed-v" title="Permalink to this definition">#</a></dt>
+<dd><p>Either CRITICAL, ERROR, WARNING, INFO, DEBUG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>CRITICAL | ERROR | WARNING | INFO | DEBUG</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-installed-version">
+<span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-installed-version" title="Permalink to this definition">#</a></dt>
+<dd><p>Show the version and exit.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-installed-h">
+<span id="cmdoption-mpm-installed-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-installed-h" title="Permalink to this definition">#</a></dt>
+<dd><p>Show this message and exit.</p>
+</dd></dl>
+</section>
+<section id="mpm-managers">
+<h3>managers<a class="headerlink" href="#mpm-managers" title="Permalink to this headline">#</a></h3>
+<p>List all supported package managers and their presence on the system.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mpm managers <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-managers-time">
+<span id="cmdoption-mpm-managers-no-time"></span><span class="sig-name descname"><span class="pre">--time</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-time</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-managers-time" title="Permalink to this definition">#</a></dt>
+<dd><p>Measure and print elapsed execution time.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-managers-color">
+<span id="cmdoption-mpm-managers-ansi"></span><span id="cmdoption-mpm-managers-no-color"></span><span id="cmdoption-mpm-managers-no-ansi"></span><span class="sig-name descname"><span class="pre">--color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ansi</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-ansi</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-managers-color" title="Permalink to this definition">#</a></dt>
+<dd><p>Strip out all colors and all ANSI codes from output.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-managers-C">
+<span id="cmdoption-mpm-managers-c"></span><span id="cmdoption-mpm-managers-config"></span><span class="sig-name descname"><span class="pre">-C</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--config</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;CONFIG_PATH&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-managers-C" title="Permalink to this definition">#</a></dt>
+<dd><p>Location of the configuration file. Supports both local path and remote URL.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-managers-v">
+<span id="cmdoption-mpm-managers-verbosity"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbosity</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;LEVEL&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-managers-v" title="Permalink to this definition">#</a></dt>
+<dd><p>Either CRITICAL, ERROR, WARNING, INFO, DEBUG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>CRITICAL | ERROR | WARNING | INFO | DEBUG</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-managers-version">
+<span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-managers-version" title="Permalink to this definition">#</a></dt>
+<dd><p>Show the version and exit.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-managers-h">
+<span id="cmdoption-mpm-managers-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-managers-h" title="Permalink to this definition">#</a></dt>
+<dd><p>Show this message and exit.</p>
+</dd></dl>
+</section>
+<section id="mpm-outdated">
+<h3>outdated<a class="headerlink" href="#mpm-outdated" title="Permalink to this headline">#</a></h3>
+<p>List available package upgrades and their versions for each manager.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mpm outdated <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-outdated-c">
+<span id="cmdoption-mpm-outdated-cli-format"></span><span class="sig-name descname"><span class="pre">-c</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--cli-format</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;cli_format&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-outdated-c" title="Permalink to this definition">#</a></dt>
+<dd><p>Format of CLI fields in JSON output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>fragments | plain | xbar</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-outdated-time">
+<span id="cmdoption-mpm-outdated-no-time"></span><span class="sig-name descname"><span class="pre">--time</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-time</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-outdated-time" title="Permalink to this definition">#</a></dt>
+<dd><p>Measure and print elapsed execution time.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-outdated-color">
+<span id="cmdoption-mpm-outdated-ansi"></span><span id="cmdoption-mpm-outdated-no-color"></span><span id="cmdoption-mpm-outdated-no-ansi"></span><span class="sig-name descname"><span class="pre">--color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ansi</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-ansi</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-outdated-color" title="Permalink to this definition">#</a></dt>
+<dd><p>Strip out all colors and all ANSI codes from output.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-outdated-C">
+<span id="cmdoption-mpm-outdated-config"></span><span class="sig-name descname"><span class="pre">-C</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--config</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;CONFIG_PATH&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-outdated-C" title="Permalink to this definition">#</a></dt>
+<dd><p>Location of the configuration file. Supports both local path and remote URL.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-outdated-v">
+<span id="cmdoption-mpm-outdated-verbosity"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbosity</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;LEVEL&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-outdated-v" title="Permalink to this definition">#</a></dt>
+<dd><p>Either CRITICAL, ERROR, WARNING, INFO, DEBUG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>CRITICAL | ERROR | WARNING | INFO | DEBUG</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-outdated-version">
+<span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-outdated-version" title="Permalink to this definition">#</a></dt>
+<dd><p>Show the version and exit.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-outdated-h">
+<span id="cmdoption-mpm-outdated-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-outdated-h" title="Permalink to this definition">#</a></dt>
+<dd><p>Show this message and exit.</p>
+</dd></dl>
+</section>
+<section id="mpm-restore">
+<h3>restore<a class="headerlink" href="#mpm-restore" title="Permalink to this headline">#</a></h3>
+<p>Read TOML files then install or upgrade each package referenced in
+them.</p>
+<p>Version specified in the TOML file is ignored in the current implementation.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mpm restore <span class="o">[</span>OPTIONS<span class="o">]</span> TOML_FILES...
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-restore-time">
+<span id="cmdoption-mpm-restore-no-time"></span><span class="sig-name descname"><span class="pre">--time</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-time</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-restore-time" title="Permalink to this definition">#</a></dt>
+<dd><p>Measure and print elapsed execution time.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-restore-color">
+<span id="cmdoption-mpm-restore-ansi"></span><span id="cmdoption-mpm-restore-no-color"></span><span id="cmdoption-mpm-restore-no-ansi"></span><span class="sig-name descname"><span class="pre">--color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ansi</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-ansi</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-restore-color" title="Permalink to this definition">#</a></dt>
+<dd><p>Strip out all colors and all ANSI codes from output.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-restore-C">
+<span id="cmdoption-mpm-restore-c"></span><span id="cmdoption-mpm-restore-config"></span><span class="sig-name descname"><span class="pre">-C</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--config</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;CONFIG_PATH&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-restore-C" title="Permalink to this definition">#</a></dt>
+<dd><p>Location of the configuration file. Supports both local path and remote URL.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-restore-v">
+<span id="cmdoption-mpm-restore-verbosity"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbosity</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;LEVEL&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-restore-v" title="Permalink to this definition">#</a></dt>
+<dd><p>Either CRITICAL, ERROR, WARNING, INFO, DEBUG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>CRITICAL | ERROR | WARNING | INFO | DEBUG</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-restore-version">
+<span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-restore-version" title="Permalink to this definition">#</a></dt>
+<dd><p>Show the version and exit.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-restore-h">
+<span id="cmdoption-mpm-restore-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-restore-h" title="Permalink to this definition">#</a></dt>
+<dd><p>Show this message and exit.</p>
+</dd></dl>
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-restore-arg-TOML_FILES">
+<span id="cmdoption-mpm-restore-arg-toml-files"></span><span class="sig-name descname"><span class="pre">TOML_FILES</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-restore-arg-TOML_FILES" title="Permalink to this definition">#</a></dt>
+<dd><p>Required argument(s)</p>
+</dd></dl>
+</section>
+<section id="mpm-search">
+<h3>search<a class="headerlink" href="#mpm-search" title="Permalink to this headline">#</a></h3>
+<p>Search packages from all managers.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mpm search <span class="o">[</span>OPTIONS<span class="o">]</span> QUERY
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-search-extended">
+<span id="cmdoption-mpm-search-package-name"></span><span class="sig-name descname"><span class="pre">--extended</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--package-name</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-search-extended" title="Permalink to this definition">#</a></dt>
+<dd><p>Extend search to additional package metadata like description, instead of restricting it package ID and name.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-search-exact">
+<span id="cmdoption-mpm-search-fuzzy"></span><span class="sig-name descname"><span class="pre">--exact</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--fuzzy</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-search-exact" title="Permalink to this definition">#</a></dt>
+<dd><p>Only returns exact matches, or enable fuzzy search in substrings.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-search-time">
+<span id="cmdoption-mpm-search-no-time"></span><span class="sig-name descname"><span class="pre">--time</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-time</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-search-time" title="Permalink to this definition">#</a></dt>
+<dd><p>Measure and print elapsed execution time.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-search-color">
+<span id="cmdoption-mpm-search-ansi"></span><span id="cmdoption-mpm-search-no-color"></span><span id="cmdoption-mpm-search-no-ansi"></span><span class="sig-name descname"><span class="pre">--color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ansi</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-ansi</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-search-color" title="Permalink to this definition">#</a></dt>
+<dd><p>Strip out all colors and all ANSI codes from output.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-search-C">
+<span id="cmdoption-mpm-search-c"></span><span id="cmdoption-mpm-search-config"></span><span class="sig-name descname"><span class="pre">-C</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--config</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;CONFIG_PATH&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-search-C" title="Permalink to this definition">#</a></dt>
+<dd><p>Location of the configuration file. Supports both local path and remote URL.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-search-v">
+<span id="cmdoption-mpm-search-verbosity"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbosity</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;LEVEL&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-search-v" title="Permalink to this definition">#</a></dt>
+<dd><p>Either CRITICAL, ERROR, WARNING, INFO, DEBUG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>CRITICAL | ERROR | WARNING | INFO | DEBUG</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-search-version">
+<span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-search-version" title="Permalink to this definition">#</a></dt>
+<dd><p>Show the version and exit.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-search-h">
+<span id="cmdoption-mpm-search-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-search-h" title="Permalink to this definition">#</a></dt>
+<dd><p>Show this message and exit.</p>
+</dd></dl>
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-search-arg-QUERY">
+<span id="cmdoption-mpm-search-arg-query"></span><span class="sig-name descname"><span class="pre">QUERY</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-search-arg-QUERY" title="Permalink to this definition">#</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+</section>
+<section id="mpm-sync">
+<h3>sync<a class="headerlink" href="#mpm-sync" title="Permalink to this headline">#</a></h3>
+<p>Sync local package metadata and info from external sources.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mpm sync <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-sync-time">
+<span id="cmdoption-mpm-sync-no-time"></span><span class="sig-name descname"><span class="pre">--time</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-time</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-sync-time" title="Permalink to this definition">#</a></dt>
+<dd><p>Measure and print elapsed execution time.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-sync-color">
+<span id="cmdoption-mpm-sync-ansi"></span><span id="cmdoption-mpm-sync-no-color"></span><span id="cmdoption-mpm-sync-no-ansi"></span><span class="sig-name descname"><span class="pre">--color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ansi</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-ansi</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-sync-color" title="Permalink to this definition">#</a></dt>
+<dd><p>Strip out all colors and all ANSI codes from output.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-sync-C">
+<span id="cmdoption-mpm-sync-c"></span><span id="cmdoption-mpm-sync-config"></span><span class="sig-name descname"><span class="pre">-C</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--config</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;CONFIG_PATH&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-sync-C" title="Permalink to this definition">#</a></dt>
+<dd><p>Location of the configuration file. Supports both local path and remote URL.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-sync-v">
+<span id="cmdoption-mpm-sync-verbosity"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbosity</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;LEVEL&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-sync-v" title="Permalink to this definition">#</a></dt>
+<dd><p>Either CRITICAL, ERROR, WARNING, INFO, DEBUG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>CRITICAL | ERROR | WARNING | INFO | DEBUG</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-sync-version">
+<span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-sync-version" title="Permalink to this definition">#</a></dt>
+<dd><p>Show the version and exit.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-sync-h">
+<span id="cmdoption-mpm-sync-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-sync-h" title="Permalink to this definition">#</a></dt>
+<dd><p>Show this message and exit.</p>
+</dd></dl>
+</section>
+<section id="mpm-upgrade">
+<h3>upgrade<a class="headerlink" href="#mpm-upgrade" title="Permalink to this headline">#</a></h3>
+<p>Perform a full package upgrade on all available managers.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mpm upgrade <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-upgrade-time">
+<span id="cmdoption-mpm-upgrade-no-time"></span><span class="sig-name descname"><span class="pre">--time</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-time</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-upgrade-time" title="Permalink to this definition">#</a></dt>
+<dd><p>Measure and print elapsed execution time.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-upgrade-color">
+<span id="cmdoption-mpm-upgrade-ansi"></span><span id="cmdoption-mpm-upgrade-no-color"></span><span id="cmdoption-mpm-upgrade-no-ansi"></span><span class="sig-name descname"><span class="pre">--color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ansi</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-color</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-ansi</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-upgrade-color" title="Permalink to this definition">#</a></dt>
+<dd><p>Strip out all colors and all ANSI codes from output.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-upgrade-C">
+<span id="cmdoption-mpm-upgrade-c"></span><span id="cmdoption-mpm-upgrade-config"></span><span class="sig-name descname"><span class="pre">-C</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--config</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;CONFIG_PATH&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-upgrade-C" title="Permalink to this definition">#</a></dt>
+<dd><p>Location of the configuration file. Supports both local path and remote URL.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-upgrade-v">
+<span id="cmdoption-mpm-upgrade-verbosity"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbosity</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;LEVEL&gt;</span></span><a class="headerlink" href="#cmdoption-mpm-upgrade-v" title="Permalink to this definition">#</a></dt>
+<dd><p>Either CRITICAL, ERROR, WARNING, INFO, DEBUG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options</dt>
+<dd class="field-odd"><p>CRITICAL | ERROR | WARNING | INFO | DEBUG</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-upgrade-version">
+<span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-upgrade-version" title="Permalink to this definition">#</a></dt>
+<dd><p>Show the version and exit.</p>
+</dd></dl>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-mpm-upgrade-h">
+<span id="cmdoption-mpm-upgrade-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-mpm-upgrade-h" title="Permalink to this definition">#</a></dt>
+<dd><p>Show this message and exit.</p>
+</dd></dl>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="configuration.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Configuration</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="usecase.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Use-cases</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Kevin Deldycke and contributors
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2022-03-16</div>
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">CLI help</a><ul>
+<li><a class="reference internal" href="#mpm">mpm</a><ul>
+<li><a class="reference internal" href="#mpm-backup">backup</a></li>
+<li><a class="reference internal" href="#mpm-cleanup">cleanup</a></li>
+<li><a class="reference internal" href="#mpm-install">install</a></li>
+<li><a class="reference internal" href="#mpm-installed">installed</a></li>
+<li><a class="reference internal" href="#mpm-managers">managers</a></li>
+<li><a class="reference internal" href="#mpm-outdated">outdated</a></li>
+<li><a class="reference internal" href="#mpm-restore">restore</a></li>
+<li><a class="reference internal" href="#mpm-search">search</a></li>
+<li><a class="reference internal" href="#mpm-sync">sync</a></li>
+<li><a class="reference internal" href="#mpm-upgrade">upgrade</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    </body>
+</html>

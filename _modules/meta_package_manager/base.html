@@ -1,0 +1,746 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
+        <title>meta_package_manager.base - Meta Package Manager</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">Meta Package Manager</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand centered" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/logo-square.svg" alt="Logo"/>
+  </div>
+  
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usecase.html">Use-cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli-help.html">CLI help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../xbar.html">xbar plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../falsehoods.html">Falsehoods programmers believe about package managers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../meta_package_manager.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../meta_package_manager.managers.html">meta_package_manager.managers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../meta_package_manager.tests.html">meta_package_manager.tests package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../meta_package_manager.xbar.html">meta_package_manager.xbar package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../todolist.html">Todo-list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code-of-conduct.html">Code of conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kdeldycke/meta-package-manager">GitHub Repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/sponsors/kdeldycke">Funding</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for meta_package_manager.base</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright Kevin Deldycke &lt;kevin@deldycke.com&gt; and contributors.</span>
+<span class="c1"># All Rights Reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is Free Software; you can redistribute it and/or</span>
+<span class="c1"># modify it under the terms of the GNU General Public License</span>
+<span class="c1"># as published by the Free Software Foundation; either version 2</span>
+<span class="c1"># of the License, or (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program; if not, write to the Free Software</span>
+<span class="c1"># Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">which</span>
+<span class="kn">from</span> <span class="nn">textwrap</span> <span class="kn">import</span> <span class="n">dedent</span><span class="p">,</span> <span class="n">indent</span><span class="p">,</span> <span class="n">shorten</span>
+
+<span class="kn">from</span> <span class="nn">boltons.cacheutils</span> <span class="kn">import</span> <span class="n">cachedproperty</span>
+<span class="kn">from</span> <span class="nn">boltons.iterutils</span> <span class="kn">import</span> <span class="n">flatten</span>
+<span class="kn">from</span> <span class="nn">boltons.strutils</span> <span class="kn">import</span> <span class="n">strip_ansi</span>
+<span class="kn">from</span> <span class="nn">boltons.typeutils</span> <span class="kn">import</span> <span class="n">classproperty</span>
+<span class="kn">from</span> <span class="nn">click_extra.colorize</span> <span class="kn">import</span> <span class="n">theme</span>
+<span class="kn">from</span> <span class="nn">click_extra.logging</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">click_extra.platform</span> <span class="kn">import</span> <span class="n">CURRENT_OS_ID</span>
+<span class="kn">from</span> <span class="nn">click_extra.run</span> <span class="kn">import</span> <span class="n">INDENT</span><span class="p">,</span> <span class="n">PROMPT</span><span class="p">,</span> <span class="n">run</span>
+
+<span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">parse_version</span>
+
+<span class="n">CLI_FORMATS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">"plain"</span><span class="p">,</span> <span class="s2">"fragments"</span><span class="p">,</span> <span class="s2">"xbar"</span><span class="p">})</span>
+<span class="sd">"""Rendering format of CLI in JSON fields."""</span>
+
+
+<div class="viewcode-block" id="CLIError"><a class="viewcode-back" href="../../meta_package_manager.html#meta_package_manager.base.CLIError">[docs]</a><span class="k">class</span> <span class="nc">CLIError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+
+    <span class="sd">"""An error occurred when running package manager CLI."""</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+        <span class="sd">"""The exception internally keeps the result of CLI execution."""</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">output</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">error</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Human-readable error."""</span>
+        <span class="n">indented_output</span> <span class="o">=</span> <span class="n">indent</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">),</span> <span class="n">INDENT</span><span class="p">)</span>
+        <span class="n">indented_error</span> <span class="o">=</span> <span class="n">indent</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">),</span> <span class="n">INDENT</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">indent</span><span class="p">(</span>
+            <span class="n">dedent</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"""</span>
+<span class="s2">            Return code: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            Output:</span>
+<span class="s2">            </span><span class="si">{</span><span class="n">indented_output</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            Error:</span>
+<span class="s2">            </span><span class="si">{</span><span class="n">indented_error</span><span class="si">}</span><span class="s2">"""</span>
+            <span class="p">),</span>
+            <span class="n">INDENT</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">error_excerpt</span> <span class="o">=</span> <span class="n">shorten</span><span class="p">(</span>
+            <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">split</span><span class="p">()),</span> <span class="n">width</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">placeholder</span><span class="o">=</span><span class="s2">"(...)"</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">error_excerpt</span><span class="si">!r}</span><span class="s2">)&gt;"</span></div>
+
+
+<div class="viewcode-block" id="PackageManager"><a class="viewcode-back" href="../../meta_package_manager.html#meta_package_manager.base.PackageManager">[docs]</a><span class="k">class</span> <span class="nc">PackageManager</span><span class="p">:</span>
+
+    <span class="sd">"""Base class from which all package manager definitions inherits."""</span>
+
+    <span class="n">platforms</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">()</span>
+    <span class="sd">"""List of platforms supported by the manager."""</span>
+
+    <span class="n">requirement</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">"""Minimal required version."""</span>
+
+    <span class="n">version_cli_options</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"--version"</span><span class="p">,)</span>
+    <span class="sd">"""List of options to get the version from the package manager CLI."""</span>
+
+    <span class="n">version_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"(?P&lt;version&gt;\S+)"</span>
+    <span class="sd">""" Regular expression used to extract the version number from the result of the CLI</span>
+<span class="sd">    run with the options above. It doesn't matter if the regex returns unsanitized</span>
+<span class="sd">    and crappy string. The ``version()`` method will clean and normalized it.</span>
+
+<span class="sd">    By default match the first part that is space-separated.</span>
+<span class="sd">    """</span>
+
+    <span class="n">cli_search_path</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="sd">""" List of additional path to help mpm hunt down the package manager CLI.</span>
+
+<span class="sd">    Should be a list of strings whose order dictatate the search sequence.</span>
+
+<span class="sd">    Most of the time unnecessay: :py:func:`meta_package_manager.base.PackageManager.cli_path`</span>
+<span class="sd">    works well on all platforms.</span>
+<span class="sd">    """</span>
+
+    <span class="n">extra_env</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">"""Additional environment variables to add to the current context.</span>
+
+<span class="sd">    Automaticcaly applied on each :py:func:`meta_package_manager.base.PackageManager.run_cli`</span>
+<span class="sd">    calls.</span>
+<span class="sd">    """</span>
+
+    <span class="n">pre_cmds</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="sd">"""Global list of pre-commands to add before before invoked CLI.</span>
+
+<span class="sd">    Automaticcaly added to each :py:func:`meta_package_manager.base.PackageManager.run_cli`</span>
+<span class="sd">    call.</span>
+
+<span class="sd">    Used to prepend ``sudo`` or other CLIs.</span>
+<span class="sd">    """</span>
+
+    <span class="n">pre_args</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">post_args</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="sd">"""Global list of options used before and after the invoked package manager CLI.</span>
+
+<span class="sd">    Automaticcaly added to each :py:func:`meta_package_manager.base.PackageManager.run_cli`</span>
+<span class="sd">    call.</span>
+
+<span class="sd">    Essentially used to force silencing, low verbosity or no-color output.</span>
+<span class="sd">    """</span>
+
+    <span class="n">stop_on_error</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="sd">"""Tell the manager to either raise or continue on errors."""</span>
+
+    <span class="n">ignore_auto_updates</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="sd">"""Some managers can report or ignore packages which have their own auto-update mecanism.</span>
+<span class="sd">    """</span>
+
+    <span class="n">dry_run</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="sd">"""Do not actually perform any action, just simulate CLI calls."""</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Log of all encountered CLI errors.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cli_errors</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="nd">@classproperty</span>
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">"""Return package manager's ID. Defaults based on class name.</span>
+
+<span class="sd">        This ID must be unique among all package manager definitions and</span>
+<span class="sd">        lower-case as they're used as feature flags for the :command:`mpm` CLI.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"_"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">)</span>
+
+    <span class="nd">@classproperty</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">"""Return package manager's common name. Defaults based on class name."""</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span>
+
+    <span class="nd">@classproperty</span>
+    <span class="k">def</span> <span class="nf">cli_names</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">"""List of CLI names the package manager is known as.</span>
+
+<span class="sd">        The supported CLI names are ordered by priority. This is used for example to</span>
+<span class="sd">        help out the search of the right binary in the case of the python3/python2</span>
+<span class="sd">        transition.</span>
+
+<span class="sd">        Is derived by default from the manager's ID.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">id</span><span class="p">,)</span>
+
+    <span class="nd">@classproperty</span>
+    <span class="k">def</span> <span class="nf">virtual</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">"""Should we expose the package manager to the user?</span>
+
+<span class="sd">        Virtual package manager are just skeleton classes used to factorize</span>
+<span class="sd">        code among managers of the same family.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"PackageManager"</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">cli_names</span>
+
+    <span class="nd">@cachedproperty</span>
+    <span class="k">def</span> <span class="nf">cli_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Fully qualified path to the package manager CLI.</span>
+
+<span class="sd">        Automaticaly search the location of the CLI in the system. Try multiple CLI</span>
+<span class="sd">        names within several system path.</span>
+
+<span class="sd">        Only checks if the file exists. Its executability will be assessed later. See</span>
+<span class="sd">        the ``self.executable`` method below.</span>
+
+<span class="sd">        Returns ``None`` if no CLI was found or those found were not a file.</span>
+<span class="sd">        """</span>
+        <span class="c1"># Check if the path exist in any of the environment locations.</span>
+        <span class="n">env_path</span> <span class="o">=</span> <span class="s2">":"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">flatten</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">cli_search_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"PATH"</span><span class="p">))))</span>
+
+        <span class="c1"># Search for multiple CLI names.</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cli_names</span><span class="p">:</span>
+            <span class="n">cli_path</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">F_OK</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">env_path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cli_path</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> CLI not found."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cli_path</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Check if path exist and is a file.</span>
+        <span class="c1"># Do not resolve symlink here. Some manager like Homebrew on Linux rely on some</span>
+        <span class="c1"># sort of synlink trickery to set environment variables.</span>
+        <span class="n">cli_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">cli_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cli_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">cli_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">cli_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">cli_path</span><span class="si">}</span><span class="s2"> is not a file."</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> CLI found at </span><span class="si">{</span><span class="n">cli_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cli_path</span>
+
+    <span class="nd">@cachedproperty</span>
+    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Invoke the manager and extract its own reported version string.</span>
+
+<span class="sd">        Returns a parsed and normalized version in the form of a `TokenizedString`</span>
+<span class="sd">        instance.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">executable</span><span class="p">:</span>
+            <span class="c1"># Invoke the manager.</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_cli</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">version_cli_options</span><span class="p">,</span>
+                <span class="n">skip_globals</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">force_exec</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Extract the version with the regex.</span>
+            <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+                <span class="n">version_string</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version_regex</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"version"</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Extracted version: </span><span class="si">{</span><span class="n">version_string</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">parse_version</span><span class="p">(</span><span class="n">version_string</span><span class="p">)</span>
+
+    <span class="nd">@cachedproperty</span>
+    <span class="k">def</span> <span class="nf">supported</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Is the package manager supported on that platform?"""</span>
+        <span class="k">return</span> <span class="n">CURRENT_OS_ID</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">platforms</span>
+
+    <span class="nd">@cachedproperty</span>
+    <span class="k">def</span> <span class="nf">executable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Is the package manager CLI can be executed by the current user?"""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">cli_path</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cli_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">X_OK</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cli_path</span><span class="si">}</span><span class="s2"> not executable."</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@cachedproperty</span>
+    <span class="k">def</span> <span class="nf">fresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Does the package manager match the version requirement?"""</span>
+        <span class="c1"># Version is mandatory.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">requirement</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&lt;</span> <span class="n">parse_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">requirement</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2"> is older than "</span>
+                    <span class="s2">"</span><span class="si">{self.requirement}</span><span class="s2"> version requirement."</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@cachedproperty</span>
+    <span class="k">def</span> <span class="nf">available</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Is the package manager available and ready-to-use on the system?</span>
+
+<span class="sd">        Returns True only if the main CLI:</span>
+
+<span class="sd">        # is supported on the current platform,</span>
+<span class="sd">        # was found on the system,</span>
+<span class="sd">        # is executable, and</span>
+<span class="sd">        # match the version requirement.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">supported</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">cli_path</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">executable</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">fresh</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PackageManager.run"><a class="viewcode-back" href="../../meta_package_manager.html#meta_package_manager.base.PackageManager.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">extra_env</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">"""Run a shell command, return the output and accumulate error messages.</span>
+
+<span class="sd">        ``args`` is allowed to be a nested structure of iterables, in which case it will</span>
+<span class="sd">        be recursively flatten, then ``None`` will be discarded, and finally each item</span>
+<span class="sd">        casted to strings.</span>
+
+<span class="sd">        Running commands with that method:</span>
+<span class="sd">          * adds logs at the appropriate level</span>
+<span class="sd">          * removes ANSI escape codes from ``&lt;stdout&gt;`` and ``&lt;stderr&gt;``</span>
+<span class="sd">          * returns ready-to-use normalized strings (dedented and stripped)</span>
+<span class="sd">          * let ``--dry-run`` and ``--stop-on-error`` have effect on execution</span>
+
+<span class="sd">        ..todo:</span>
+
+<span class="sd">            Move ``--dry-run`` option and this method to click-extra?</span>
+<span class="sd">        """</span>
+        <span class="c1"># Casting to string helps serialize Path and Version objects.</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="o">.</span><span class="fm">__ne__</span><span class="p">,</span> <span class="n">flatten</span><span class="p">(</span><span class="n">args</span><span class="p">))))</span>
+        <span class="n">args_str</span> <span class="o">=</span> <span class="n">theme</span><span class="o">.</span><span class="n">invoked_command</span><span class="p">(</span><span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+        <span class="n">cli_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">PROMPT</span><span class="si">}{</span><span class="n">args_str</span><span class="si">}</span><span class="s2">"</span>
+
+        <span class="n">code</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dry-run: </span><span class="si">{</span><span class="n">cli_msg</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">cli_msg</span><span class="p">)</span>
+            <span class="n">code</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">extra_env</span><span class="o">=</span><span class="n">extra_env</span><span class="p">)</span>
+
+        <span class="c1"># Normalize messages.</span>
+        <span class="k">if</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">dedent</span><span class="p">(</span><span class="n">strip_ansi</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">error</span> <span class="k">if</span> <span class="n">error</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">dedent</span><span class="p">(</span><span class="n">strip_ansi</span><span class="p">(</span><span class="n">output</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">output</span> <span class="k">if</span> <span class="n">output</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="c1"># Log &lt;stdout&gt; and &lt;stderr&gt; output.</span>
+        <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">indent</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">INDENT</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">error</span><span class="p">:</span>
+            <span class="c1"># Non-fatal error messages are logged as warnings.</span>
+            <span class="n">log_func</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">error</span> <span class="k">if</span> <span class="n">code</span> <span class="k">else</span> <span class="n">logger</span><span class="o">.</span><span class="n">warning</span>
+            <span class="n">log_func</span><span class="p">(</span><span class="n">indent</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">INDENT</span><span class="p">))</span>
+
+        <span class="c1"># Non-successful run.</span>
+        <span class="k">if</span> <span class="n">code</span> <span class="ow">and</span> <span class="n">error</span><span class="p">:</span>
+            <span class="c1"># Produce an exception and eventually raise it.</span>
+            <span class="n">exception</span> <span class="o">=</span> <span class="n">CLIError</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop_on_error</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">exception</span>
+            <span class="c1"># Accumulate errors.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cli_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">output</span></div>
+
+<div class="viewcode-block" id="PackageManager.run_cli"><a class="viewcode-back" href="../../meta_package_manager.html#meta_package_manager.base.PackageManager.run_cli">[docs]</a>    <span class="k">def</span> <span class="nf">run_cli</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">skip_globals</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">force_exec</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">"""Shortcut utility to the ``run`` method above, that is explicitly using the</span>
+<span class="sd">        binary set by the ``cli_path`` property.</span>
+
+<span class="sd">        ``self.extra_env`` is used for environment variables during execution.</span>
+
+<span class="sd">        ``self.pre_cmd`` global is added before the CLI path.</span>
+
+<span class="sd">        ``self.pre_args`` and ``self.post_args`` globals are added before and after</span>
+<span class="sd">        the provided args.</span>
+
+<span class="sd">        If ``skip_globals`` is ``True`` global environment variables, pre-commands and</span>
+<span class="sd">        arguments are not added whatsoever and the CLI is run bare, not unlike a call to the plain ``run()``.</span>
+
+<span class="sd">        Also offer by the way of the ``force_exec`` parameter the possibility to force</span>
+<span class="sd">        the execution and completion of the command regardless of ``--dry-run`` and</span>
+<span class="sd">        ``--stop-on-error`` user options.</span>
+<span class="sd">        """</span>
+        <span class="c1"># Prepare the full list of CLI arguments.</span>
+        <span class="n">extra_env</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_globals</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pre_args</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">post_args</span><span class="p">)</span>
+            <span class="n">extra_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_env</span>
+
+        <span class="c1"># Temporarily replace --dry-run and --stop-on-error user options with our own.</span>
+        <span class="k">if</span> <span class="n">force_exec</span><span class="p">:</span>
+            <span class="n">user_options</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop_on_error</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop_on_error</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
+
+        <span class="c1"># Execute the command.</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pre_cmds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cli_path</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">extra_env</span><span class="o">=</span><span class="n">extra_env</span><span class="p">)</span>
+
+        <span class="c1"># Restore user options for --dry-run and --stop-on-error.</span>
+        <span class="k">if</span> <span class="n">force_exec</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop_on_error</span> <span class="o">=</span> <span class="n">user_options</span>
+
+        <span class="k">return</span> <span class="n">output</span></div>
+
+<div class="viewcode-block" id="PackageManager.sync"><a class="viewcode-back" href="../../meta_package_manager.html#meta_package_manager.base.PackageManager.sync">[docs]</a>    <span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Refresh local manager metadata from remote repository."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sync</span><span class="o">.</span><span class="vm">__func__</span><span class="o">.</span><span class="vm">__qualname__</span> <span class="o">==</span> <span class="n">PackageManager</span><span class="o">.</span><span class="n">sync</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> does not implement sync command."</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sync </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> package info..."</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PackageManager.cleanup"><a class="viewcode-back" href="../../meta_package_manager.html#meta_package_manager.base.PackageManager.cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Remove left-overs and unused packages."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="o">.</span><span class="vm">__func__</span><span class="o">.</span><span class="vm">__qualname__</span> <span class="o">==</span> <span class="n">PackageManager</span><span class="o">.</span><span class="n">cleanup</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> does not implement cleanup command."</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Cleanup </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">installed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""List packages currently installed on the system.</span>
+
+<span class="sd">        Returns a dict indexed by package IDs. Each item is a dict with</span>
+<span class="sd">        package ID, name and version.</span>
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<div class="viewcode-block" id="PackageManager.search"><a class="viewcode-back" href="../../meta_package_manager.html#meta_package_manager.base.PackageManager.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">extended</span><span class="p">,</span> <span class="n">exact</span><span class="p">):</span>
+        <span class="sd">"""Search packages whose ID contain exact or partial query.</span>
+
+<span class="sd">        Returns a dict indexed by package IDs. Each item is a dict with</span>
+<span class="sd">        package ID, name, version and a boolean indicating if the match is</span>
+<span class="sd">        exact or partial.</span>
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="PackageManager.install"><a class="viewcode-back" href="../../meta_package_manager.html#meta_package_manager.base.PackageManager.install">[docs]</a>    <span class="k">def</span> <span class="nf">install</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">package_id</span><span class="p">):</span>
+        <span class="sd">"""Install one package and one only."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">install</span><span class="o">.</span><span class="vm">__func__</span><span class="o">.</span><span class="vm">__qualname__</span> <span class="o">==</span> <span class="n">PackageManager</span><span class="o">.</span><span class="n">install</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> does not implement install command."</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Install </span><span class="si">{</span><span class="n">package_id</span><span class="si">}</span><span class="s2"> package from </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">outdated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""List currently installed packages having a new version available.</span>
+
+<span class="sd">        Returns a dict indexed by package IDs. Each item is a dict with</span>
+<span class="sd">        package ID, name, current installed version and latest upgradeable</span>
+<span class="sd">        version.</span>
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<div class="viewcode-block" id="PackageManager.upgrade_cli"><a class="viewcode-back" href="../../meta_package_manager.html#meta_package_manager.base.PackageManager.upgrade_cli">[docs]</a>    <span class="k">def</span> <span class="nf">upgrade_cli</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">package_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">"""Return a shell-compatible full-CLI to upgrade a package."""</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="PackageManager.upgrade"><a class="viewcode-back" href="../../meta_package_manager.html#meta_package_manager.base.PackageManager.upgrade">[docs]</a>    <span class="k">def</span> <span class="nf">upgrade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">package_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">"""Perform the upgrade of the provided package to latest version."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">upgrade_cli</span><span class="p">(</span><span class="n">package_id</span><span class="p">),</span> <span class="n">extra_env</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_env</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PackageManager.upgrade_all_cli"><a class="viewcode-back" href="../../meta_package_manager.html#meta_package_manager.base.PackageManager.upgrade_all_cli">[docs]</a>    <span class="k">def</span> <span class="nf">upgrade_all_cli</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Return a shell-compatible full-CLI to upgrade all packages.</span>
+
+<span class="sd">        Piggy-back on upgrade_cli() by default, which we'll call without a package_id parameter.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">upgrade_cli</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PackageManager.upgrade_all"><a class="viewcode-back" href="../../meta_package_manager.html#meta_package_manager.base.PackageManager.upgrade_all">[docs]</a>    <span class="k">def</span> <span class="nf">upgrade_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Perform a full upgrade of all outdated packages to latest versions.</span>
+
+<span class="sd">        If the manager doesn't implements a full upgrade one-liner, then</span>
+<span class="sd">        fall-back to calling single-package upgrade one by one.</span>
+<span class="sd">        """</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">upgrade_all_cli</span><span class="p">(),</span> <span class="n">extra_env</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_env</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> does not implement upgrade_all command."</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Call single-package upgrade CLI one by one."</span><span class="p">)</span>
+            <span class="n">log</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">package_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outdated</span><span class="p">:</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upgrade</span><span class="p">(</span><span class="n">package_id</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PackageManager.render_cli"><a class="viewcode-back" href="../../meta_package_manager.html#meta_package_manager.base.PackageManager.render_cli">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">render_cli</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">cli_format</span><span class="o">=</span><span class="s2">"plain"</span><span class="p">):</span>
+        <span class="sd">"""Return a formatted CLI in the requested format.</span>
+
+<span class="sd">        * ``plain`` returns a simple string</span>
+<span class="sd">        * ``fragments`` returns a list of strings</span>
+<span class="sd">        * ``xbar`` returns a CLI with parameters formatted into the xbar dialect</span>
+<span class="sd">        """</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">cli_format</span> <span class="ow">in</span> <span class="n">CLI_FORMATS</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">flatten</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>  <span class="c1"># Serialize Path instances.</span>
+
+        <span class="k">if</span> <span class="n">cli_format</span> <span class="o">==</span> <span class="s2">"fragments"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cli_format</span> <span class="o">==</span> <span class="s2">"plain"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+
+        <span class="c1"># Renders the CLI into xbar dialect.</span>
+        <span class="n">xbar_params</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">param_value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+            <span class="n">param_id</span> <span class="o">=</span> <span class="s2">"shell"</span> <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">"param</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">"</span>
+            <span class="n">xbar_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">param_id</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">param_value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">" | "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">xbar_params</span><span class="p">)</span></div></div>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Kevin Deldycke and contributors
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2022-03-16</div>
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/scripts/furo.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    </body>
+</html>
